@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BMS Accelerator | Digital BMS for Manufacturing Performance</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #0b1220;
+      --accent: #22c55e;
+      --accent-soft: #bbf7d0;
+      --card-border: #1f2937;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --chip-bg: #111827;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      line-height: 1.6;
+      color: var(--text-main);
+      background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
+    }
+
+    header,
+    section {
+      padding: 60px 5vw;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* HERO */
+
+    header {
+      position: relative;
+      padding-top: 80px;
+      padding-bottom: 100px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+      overflow: hidden;
+    }
+
+    header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, rgba(2, 6, 23, 0.95), rgba(15, 23, 42, 0.75)),
+        url("https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=1600&q=80")
+        center/cover no-repeat;
+      z-index: -2;
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.35), transparent 55%);
+      mix-blend-mode: screen;
+      z-index: -1;
+    }
+
+    h1, h2, h3, h4 {
+      margin-top: 0;
+      font-weight: 700;
+    }
+
+    h1 {
+      font-size: clamp(2.3rem, 4vw, 3rem);
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 3vw, 2.2rem);
+      margin-bottom: 0.5rem;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      margin-top: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    h4 {
+      font-size: 1.05rem;
+      margin-bottom: 0.25rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      color: var(--text-muted);
+    }
+
+    .hero-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .hero-subtitle {
+      font-size: 1.05rem;
+      max-width: 600px;
+    }
+
+    .hero-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin: 1rem 0 1.3rem;
+    }
+
+    .chip {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.8);
+      color: #cbd5f5;
+    }
+
+    .chip--accent {
+      border-color: var(--accent-soft);
+      background: rgba(34, 197, 94, 0.12);
+      color: #bbf7d0;
+    }
+
+    .btn-row {
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.6rem;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease, border-color 0.12s ease;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #052e16;
+      box-shadow: 0 12px 35px rgba(34, 197, 94, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 50px rgba(34, 197, 94, 0.55);
+    }
+
+    .btn-secondary {
+      background: rgba(15, 23, 42, 0.85);
+      color: #e5e7eb;
+      border-color: rgba(148, 163, 184, 0.6);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(15, 23, 42, 0.95);
+      border-color: var(--accent-soft);
+    }
+
+    .hero-side-card {
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9));
+      padding: 1.25rem 1.35rem;
+      box-shadow: 0 18px 35px rgba(15, 23, 42, 0.8);
+    }
+
+    .hero-side-metric-row {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.5rem;
+      margin-bottom: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-metric {
+      flex: 1;
+      min-width: 110px;
+      padding: 0.6rem 0.7rem;
+      border-radius: 12px;
+      border: 1px solid rgba(55, 65, 81, 0.8);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .metric-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9ca3af;
+    }
+
+    .metric-value {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    .small-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.75rem;
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(15, 118, 110, 0.16);
+      color: #a5f3fc;
+      margin-top: 0.25rem;
+    }
+
+    .sparkline {
+      width: 100%;
+      height: 70px;
+      margin-top: 0.5rem;
+      border-radius: 12px;
+      background: radial-gradient(circle at top left, rgba(34, 197, 94, 0.2), transparent 55%),
+                  radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.28), transparent 60%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sparkline svg {
+      position: absolute;
+      inset: 0;
+    }
+
+    /* COMMON LAYOUT */
+
+    section {
+      border-bottom: 1px solid rgba(30, 64, 175, 0.4);
+    }
+
+    .section-header {
+      margin-bottom: 1.25rem;
+    }
+
+    .section-kicker {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #60a5fa;
+      margin-bottom: 0.25rem;
+    }
+
+    .section-description {
+      max-width: 680px;
+    }
+
+    img {
+      width: 100%;
+      border-radius: 14px;
+      margin: 24px 0;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+    }
+
+    ul {
+      padding-left: 1.2rem;
+    }
+
+    li {
+      margin-bottom: 0.4rem;
+    }
+
+    .muted {
+      color: var(--text-muted);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+      background: rgba(15, 23, 42, 0.9);
+      padding: 1.2rem 1.3rem;
+    }
+
+    .card img {
+      height: 150px;
+      object-fit: cover;
+      margin-top: 0;
+      margin-bottom: 0.85rem;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.35rem;
+    }
+
+    .pill {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(17, 24, 39, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: var(--text-muted);
+    }
+
+    /* DIGITALISATION / CHARTS */
+
+    .digital-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .chart-card {
+      border-radius: 18px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.92));
+      padding: 1.1rem 1.3rem;
+    }
+
+    .chart-title {
+      font-size: 0.9rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.7rem;
+    }
+
+    .chart-title span {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    .chart-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 0.45rem;
+      height: 130px;
+      margin-bottom: 0.5rem;
+    }
+
+    .bar {
+      flex: 1;
+      border-radius: 999px 999px 0 0;
+      background: linear-gradient(to top, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.9));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bar--blue {
+      background: linear-gradient(to top, rgba(59, 130, 246, 0.08), rgba(59, 130, 246, 0.96));
+    }
+
+    .bar--amber {
+      background: linear-gradient(to top, rgba(245, 158, 11, 0.06), rgba(245, 158, 11, 0.9));
+    }
+
+    .bar-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    /* CONTACT FORM */
+
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    form .full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      display: block;
+      margin-bottom: 0.3rem;
+      color: var(--text-muted);
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 0.55rem 0.65rem;
+      border-radius: 8px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      font-size: 0.9rem;
+      font-family: inherit;
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .checkbox-row input {
+      width: auto;
+      margin-top: 0.23rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero-layout {
+        grid-template-columns: 1fr;
+      }
+      header {
+        padding-top: 70px;
+        padding-bottom: 70px;
+      }
+    }
+
+    @media (max-width: 780px) {
+      .digital-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      header,
+      section {
+        padding: 40px 5vw;
+      }
+      form {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- HERO -->
+<header>
+  <div class="hero-layout">
+    <div>
+      <div class="hero-chips">
+        <span class="chip chip--accent">TPM Accelerator</span>
+        <span class="chip">Manufacturing</span>
+        <span class="chip">Digitalisation</span>
+        <span class="chip">OEE · Losses · Culture</span>
+      </div>
+
+      <h1>BMS Accellerator for plants that can’t afford to stand still</h1>
+      <p class="hero-subtitle">
+        BMS Accelerator is a practical deployment model that connects operators, maintenance and data —
+        turning your plants into learning systems that eliminate losses faster.
+      </p>
+
+      <div class="btn-row">
+        <a href="#" class="btn btn-primary">Download BMS Accellerator overview (PDF)</a>
+        <a href="#contact" class="btn btn-secondary">Schedule a conversation</a>
+      </div>
+    </div>
+
+    <div class="hero-side-card">
+      <div class="metric-label">Live example · 12-month pilot</div>
+      <div class="hero-side-metric-row">
+        <div class="hero-metric">
+          <div class="metric-label">OEE uplift</div>
+          <div class="metric-value">+9.8%</div>
+          <div class="small-pill">Line-based TPM</div>
+        </div>
+        <div class="hero-metric">
+          <div class="metric-label">Unplanned downtime</div>
+          <div class="metric-value">-31%</div>
+          <div class="small-pill">AM + PM integration</div>
+        </div>
+      </div>
+
+      <div class="sparkline">
+        <!-- simple line "trend" -->
+        <svg viewBox="0 0 120 40" preserveAspectRatio="none">
+          <polyline
+            fill="none"
+            stroke="#22c55e"
+            stroke-width="2"
+            points="0,32 12,30 24,28 36,26 48,21 60,19 72,16 84,11 96,9 108,7 120,6" />
+          <polyline
+            fill="none"
+            stroke="#38bdf8"
+            stroke-width="1.5"
+            stroke-dasharray="3 3"
+            points="0,34 12,33 24,32 36,31 48,29 60,27 72,25 84,24 96,22 108,21 120,20" />
+        </svg>
+      </div>
+      <p class="muted" style="font-size:0.8rem;margin-top:0.55rem;">
+        Example trend: improvement in OEE vs. unplanned downtime over 12 months after structured TPM rollout on a model line.
+      </p>
+    </div>
+  </div>
+</header>
+
+<!-- OUTCOMES -->
+<section>
+  <div class="section-header">
+    <div class="section-kicker">Impact</div>
+    <h2>Manufacturing outcomes you can track on every line</h2>
+    <p class="section-description">
+      BMS Accelerator connects clear standards, daily routines and simple digital signals so you can see
+      whether your plants are moving in the right direction — not just running workshops.
+    </p>
+  </div>
+
+  <img
+    src="https://www.3ds.com/assets/invest/styles/banner/public/2023-04/digital-manufacturing2.jpg.webp?itok=CwnqmaYx"
+    alt="Operators in a manufacturing environment working together">
+
+  <ul>
+    <li><strong>+5–15% OEE</strong> through structured loss analysis and AM/PM integration.</li>
+    <li><strong>-20–40% unplanned downtime</strong> by stabilising basic conditions and clarifying escalation.</li>
+    <li><strong>-10–25% minor stops & speed losses</strong> via operator-owned standards and checks.</li>
+    <li><strong>Fewer chronic quality issues</strong> through visible parameters and simple problem solving.</li>
+    <li><strong>Improved safety & 5S</strong> as a natural side-effect of true equipment ownership.</li>
+    <li><strong>Higher engagement</strong> as teams see their actions in the trend, not just in a slide deck.</li>
+  </ul>
+</section>
+
+<!-- WHAT IS TPM ACCELERATOR -->
+<section>
+  <div class="section-header">
+    <div class="section-kicker">Method</div>
+    <h2>What is TPM Accelerator?</h2>
+    <p class="section-description">
+      A structured BMS deployment model that blends classic TPM with digital-ready design. Everything is built
+      so it works on whiteboards first — and connects to apps, dashboards or CMMS when you’re ready.
+    </p>
+  </div>
+
+  <img
+    src="https://www.3ds.com/assets/invest/styles/banner/public/2023-04/digital-manufacturing3.jpg.webp?itok=yRInCnPR"
+    alt="Industrial equipment in a smart factory">
+
+  <ul>
+    <li>A clear <strong>deployment roadmap</strong> from model line to full network.</li>
+    <li><strong>Standardised templates & training content</strong> ready to brand for your company.</li>
+    <li><strong>Module-based design</strong> for AM, PM, FI, Performance Management and Leadership.</li>
+    <li><strong>Loss & KPI framework</strong> that can feed existing OEE, BI or CMMS tools.</li>
+    <li><strong>Digital-friendly, offline-capable</strong> — works on paper, whiteboards or devices.</li>
+  </ul>
+</section>
+
+<!-- FOCUS AREAS (EQUIPMENT + PEOPLE) -->
+<section>
+  <div class="section-header">
+    <div class="section-kicker">Scope</div>
+    <h2>BMS Accellerator focus areas across people, equipment and systems</h2>
+    <p class="section-description">
+      BMS Accelerator is not a poster program. It defines what great looks like on the line every day — for
+      operators, maintainers and leaders.
+    </p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <img
+        src="https://blogs-images.forbes.com/louiscolumbus/files/2018/06/predicting-the-future-of-digital-manufacturing.jpg"
+        alt="Engineer monitoring digital dashboards in a control room">
+      <h4>Strategy & Roadmap</h4>
+      <p class="muted">
+        Connect TPM to business priorities, choose model lines and define a realistic pace for scale-up across sites.
+      </p>
+      <div class="pill-row">
+        <span class="pill">Network design</span><span class="pill">Model line</span><span class="pill">Roadmap</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <img
+        src="https://clubrunner.blob.core.windows.net/00000305561/Images/Website/Proactive-Inspections.jpg"
+        alt="Operators inspecting conveyor equipment on a line">
+      <h4>Autonomous Maintenance</h4>
+      <p class="muted">
+        Cleaning, inspection, tagging and lubrication routines that operators own — with clear standards and visuals.
+      </p>
+      <div class="pill-row">
+        <span class="pill">Basic conditions</span><span class="pill">Checks</span><span class="pill">Tags</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <img
+        src="https://www.spherion.com/s3fs-media/sph/public/styles/blog_article/public/2022-06/Smart_line_operator_using_machine_in_factory_workshop_1600x1200.jpg?itok=278UfVil"
+        alt="Industrial machines and equipment in a manufacturing plant">
+      <h4>Planned Maintenance</h4>
+      <p class="muted">
+        Maintenance strategy, PM frequencies and spares aligned with how the line actually runs in reality.
+      </p>
+      <div class="pill-row">
+        <span class="pill">PM matrix</span><span class="pill">CMMS</span><span class="pill">AM-PM link</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <img
+        src="https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=900&q=80"
+        alt="Digital analytics and charts on multiple screens">
+      <h4>Performance & Losses</h4>
+      <p class="muted">
+        Simple loss trees and KPI sets that can be tracked on whiteboards or digital dashboards with the same logic.
+      </p>
+      <div class="pill-row">
+        <span class="pill">OEE</span><span class="pill">Loss tree</span><span class="pill">Digital ready</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <img
+        src="https://totalqualitymanagement.wordpress.com/wp-content/uploads/2023/05/image-21.png"
+        alt="Close-up of industrial control panel and gauges">
+      <h4>Problem Solving</h4>
+      <p class="muted">
+        5Why, fishbone and A3 that fit on one page and can be used by operators, not just engineers.
+      </p>
+      <div class="pill-row">
+        <span class="pill">FI projects</span><span class="pill">Chronic losses</span><span class="pill">A3</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <img
+        src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80"
+        alt="Team of people in a workshop looking at charts">
+      <h4>Capability & Culture</h4>
+      <p class="muted">
+        Leadership routines, coaching and recognition that keep TPM alive long after the launch workshop.
+      </p>
+      <div class="pill-row">
+        <span class="pill">Leader standard work</span><span class="pill">Coaching</span><span class="pill">Ownership</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIGITALISATION & TRENDS (GRAPHS) -->
+<section>
+  <div class="section-header">
+    <div class="section-kicker">Digitalisation</div>
+    <h2>Use data to see if TPM is really working</h2>
+    <p class="section-description">
+      BMS Accelerator is designed for a digital world: you can start with markers and magnets,
+      then plug the same logic into BI dashboards, OEE tools or your CMMS.
+    </p>
+  </div>
+
+  <div class="digital-layout">
+    <div>
+      <img
+        src="https://www.gooddata.com/img/blog/_2000xauto/safety-dashboard-gooddata-cloud.png.webp"
+        alt="Engineer looking at analytics dashboard in a modern factory office">
+
+      <p class="muted">
+        We keep the data model simple: a small, standard set of losses and KPIs that every plant can understand.
+        That drives cleaner dashboards, easier comparisons and faster decisions at daily, weekly and monthly levels.
+      </p>
+
+      <ul>
+        <li>Standard loss model that feeds OEE and downtime analytics.</li>
+        <li>Clear link between daily boards and digital trends.</li>
+        <li>Ready to connect to Power BI, Tableau or your existing tools.</li>
+        <li>Sensor and IoT-friendly — but not dependent on them.</li>
+      </ul>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">
+        <span>Example trend: OEE vs Downtime</span>
+        <span>12 months · model line</span>
+      </div>
+      <div class="chart-bars">
+        <div class="bar" style="height:35%;"></div>
+        <div class="bar" style="height:45%;"></div>
+        <div class="bar" style="height:55%;"></div>
+        <div class="bar" style="height:65%;"></div>
+        <div class="bar bar--blue" style="height:75%;"></div>
+        <div class="bar bar--blue" style="height:82%;"></div>
+        <div class="bar bar--blue" style="height:90%;"></div>
+        <div class="bar bar--amber" style="height:52%;"></div>
+        <div class="bar bar--amber" style="height:44%;"></div>
+        <div class="bar bar--amber" style="height:38%;"></div>
+        <div class="bar bar--amber" style="height:32%;"></div>
+        <div class="bar bar--amber" style="height:28%;"></div>
+      </div>
+      <div class="bar-labels">
+        <span>Month 1</span>
+        <span>Month 6</span>
+        <span>Month 12</span>
+      </div>
+
+      <div style="display:flex; gap:1rem; margin-top:0.7rem; font-size:0.78rem; color:var(--text-muted);">
+        <div style="display:flex;align-items:center;gap:0.35rem;">
+          <span style="width:10px;height:10px;border-radius:999px;background:#22c55e;"></span>
+          <span>OEE (↑)</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.35rem;">
+          <span style="width:10px;height:10px;border-radius:999px;background:#60a5fa;"></span>
+          <span>Planned compliance (↑)</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.35rem;">
+          <span style="width:10px;height:10px;border-radius:999px;background:#f59e0b;"></span>
+          <span>Unplanned downtime (↓)</span>
+        </div>
+      </div>
+
+      <p class="muted" style="font-size:0.8rem;margin-top:0.8rem;">
+        Visual example only — TPM Accelerator helps you define and track the right metrics so
+        these trends come from your data, not slides.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- DEPLOYMENT -->
+<section>
+  <div class="section-header">
+    <div class="section-kicker">Deployment</div>
+    <h2>How we deploy TPM Accelerator with your teams</h2>
+    <p class="section-description">
+      A simple, repeatable pattern that can be adapted to a single pilot site or a global network.
+      Your people stay in the centre — tools and digitalisation support them, not replace them.
+    </p>
+  </div>
+
+  <img
+    src="https://bdcmagazine.com/wp-content/uploads/elementor/thumbs/a2-scaled-1-pwtqcywwir6djue6c743mdsj0g6w93un01y3p3ytmw.jpeg"
+    alt="Team workshop with people discussing graphs and charts together">
+
+  <ol class="muted">
+    <li><strong>Assess & align</strong> – understand maturity, losses, strategy and constraints.</li>
+    <li><strong>Design the roadmap</strong> – pick model lines, define waves, set expectations.</li>
+    <li><strong>Build & adapt the toolkit</strong> – brand materials, agree on standards and KPIs.</li>
+    <li><strong>Deploy & coach</strong> – on-the-floor support, routines and leader standard work.</li>
+    <li><strong>Scale & sustain</strong> – grow internal capability, run health checks, refresh as needed.</li>
+  </ol>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header">
+    <div class="section-kicker">Next step</div>
+    <h2>Talk to us about piloting TPM Accelerator</h2>
+    <p class="section-description">
+      Whether you’re restarting TPM or building it for the first time, we can help you design a model line, run a focused pilot,
+      and set up a roadmap that your teams can actually follow.
+    </p>
+  </div>
+
+  <form>
+    <div>
+      <label for="name">Name</label>
+      <input id="name" type="text" placeholder="Your name" />
+    </div>
+    <div>
+      <label for="company">Company</label>
+      <input id="company" type="text" placeholder="Company name" />
+    </div>
+    <div>
+      <label for="role">Role</label>
+      <input id="role" type="text" placeholder="Your role" />
+    </div>
+    <div>
+      <label for="email">Email</label>
+      <input id="email" type="email" placeholder="you@company.com" />
+    </div>
+    <div>
+      <label for="country">Country / Region</label>
+      <input id="country" type="text" placeholder="Country / Region" />
+    </div>
+    <div>
+      <label for="plants">Plants in scope</label>
+      <input id="plants" type="text" placeholder="e.g. 1–3, 4–10, 10+" />
+    </div>
+    <div class="full">
+      <label for="message">Current TPM situation</label>
+      <textarea id="message" placeholder="Tell us briefly where you are and what you want to achieve"></textarea>
+    </div>
+    <div class="full checkbox-row">
+      <input id="consent" type="checkbox" />
+      <label for="consent">I agree to be contacted about TPM Accelerator and understand my details will be used for this purpose.</label>
+    </div>
+    <div class="full">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+</section>
+
+</body>
+</html>
